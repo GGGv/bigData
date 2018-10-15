@@ -7,7 +7,7 @@ import numpy as np
 from sklearn.metrics import confusion_matrix
 
 #load data
-from mnist import MNIST 
+from TensorFlow_Tutorials.mnist import MNIST 
 data=MNIST(data_dir="data/MNIST")
 print("Size of:")
 print("- TRaining-set:\t\t{}".format(data.num_train))
@@ -53,13 +53,13 @@ y_true=tf.placeholder(tf.float32,[None,num_classes])
 y_true_cls=tf.placeholder(tf.float32,[None])
 
 #variables to be optimized
-weights=tf.Variables(tf.zeros([img_size_flat,num_classes]))
-biases=tf.Variables(tf.zeros([num_classes]))
+weights = tf.Variable(tf.zeros([img_size_flat, num_classes]))
+biases = tf.Variable(tf.zeros([num_classes]))
 
 #model
 logits=tf.matmul(x,weights)+biases
 y_pred=tf.nn.softmax(logits)#convert result to 0-1 probabilities
-y_pred_cls=tf.argmax(y_pred,axis=1)
+y_pred_cls = tf.cast(tf.argmax(y_pred, axis=1),tf.float32)
 
 #cost function to optimize
 cross_entrophy=tf.nn.softmax_cross_entropy_with_logits_v2(logits=logits,labels=y_true)
@@ -69,11 +69,11 @@ cost=tf.reduce_mean(cross_entrophy)
 optimizer=tf.train.GradientDescentOptimizer(learning_rate=0.5).minimize(cost)
 
 #performance measures
-correct_prediction=tf.equal(y_pred_cls,y_true_cls)
-accuracy=tf.reduce_mean(tf.cast(correct_prediction,tf.float32))
+correct_prediction = tf.equal(y_pred_cls, y_true_cls)
+accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
 #creat tensorflow session
-session=tf.session()
+session=tf.Session()
 #initialize variables
 session.run(tf.global_variables_initializer())
 
@@ -206,4 +206,7 @@ def plot_weights():
 
 
 
+#performance before any optimization
+print_accuracy()
+plot_example_errors()
 
