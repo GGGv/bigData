@@ -210,3 +210,13 @@ def plot_weights():
 print_accuracy()
 plot_example_errors()
 
+#performance after one iteration
+optimize(num_iterations=1)
+print_accuracy()
+plot_example_errors()
+plot_weights()
+
+#performance after ten iteration
+optimize(num_iterations=9)
+print_accuracy()
+
